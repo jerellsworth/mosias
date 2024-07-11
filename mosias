@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+import click
+
+@click.command
+@click.argument('filename', type=click.Path(exists=True))
+@click.option('-p', '--port', default=None, show_default=False)
+@click.option('-o', '--offset', type=int, default=0)
+def run(filename, port, offset):
+    pass
+
+if __name__ == '__main__':
+    run()
