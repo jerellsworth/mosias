@@ -50,10 +50,9 @@ def run(filename, port, offset):
                 cfg[row[0]] = row[1]
             elif row[0].upper() == 'GO':
                 break
-        seconds_per_row = (1/150) * 60 * float(cfg["BASE TIME"])
+        seconds_per_row = (1/150) * 60 * 1/8 * float(cfg["BASE TIME"])
         port = validate_port(port or cfg.get("PORT")) 
         state = [None for _ in range(16)]
-        # 1/150 minutes/row * 60 seconds / minute * base_time
         with mido.open_output(port) as outport:
             for row in reader:
                 tstart = time.time()
@@ -68,7 +67,6 @@ def run(filename, port, offset):
                             channel=channel,
                             note=state[channel]
                             )
-                        print(msg)
                         outport.send(msg)
                     if n == 'OFF':
                         state[channel] = None
@@ -82,7 +80,6 @@ def run(filename, port, offset):
                         note=note_num,
                         velocity=100,
                         )
-                    print(msg)
                     outport.send(msg)
                 time.sleep(tend - time.time()) 
             for c in range(16):
@@ -92,7 +89,6 @@ def run(filename, port, offset):
                         channel=c,
                         note=state[c]
                         )
-                    print(msg)
                     outport.send(msg)
                 
 
